@@ -181,6 +181,17 @@
   .avis-legal{background:#fff;border:1px dashed var(--rose-clair);border-radius:16px;padding:16px 20px;margin-top:22px;font-size:13px;color:var(--gris);line-height:1.55;text-align:center}
   .avis-legal b{color:var(--encre)}
 
+  /* ---- Expertise de la fondatrice ---- */
+  .expertise{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0 8px}
+  .expertise-item{background:linear-gradient(145deg,#fff,var(--rose-pale));border:1px solid var(--rose-clair);border-radius:18px;padding:18px 15px;text-align:center}
+  .expertise-item span{font-size:27px;display:block;margin-bottom:8px}
+  .expertise-item b{display:block;font-size:14.5px;margin-bottom:5px}
+  .expertise-item small{color:var(--gris);font-size:12.5px;line-height:1.4;display:block}
+  .sources-pro{margin-top:16px;padding-top:14px;border-top:1px solid var(--rose-clair);font-size:12.5px!important}
+  .sources-pro a{color:var(--rose-fonce);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+  @media(max-width:820px){.expertise{grid-template-columns:1fr 1fr}}
+  @media(max-width:460px){.expertise{grid-template-columns:1fr}}
+
   /* ---- À propos ---- */
   .apropos{background:#fff;border-radius:28px;padding:34px;box-shadow:var(--ombre);display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;margin:50px 0 10px}
   .ap-photo{width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,var(--rose-clair),var(--lila-pale));display:grid;place-items:center;font-size:70px;box-shadow:var(--ombre)}
@@ -206,6 +217,16 @@
   .avis .rond{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:20px;color:#fff}
   .avis .qui b{display:block}
   .avis .qui span{color:var(--gris);font-size:13px}
+
+  /* ---- Retombées de l'accompagnement ---- */
+  .impact-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;padding-bottom:20px}
+  .impact{background:#fff;border-radius:var(--rayon);padding:24px;box-shadow:var(--ombre);border-top:4px solid var(--rose)}
+  .impact:nth-child(2){border-color:var(--lila)}
+  .impact:nth-child(3){border-color:var(--menthe)}
+  .impact:nth-child(4){border-color:var(--peche)}
+  .impact span{font-size:30px}
+  .impact h3{font-size:18px;margin:10px 0 7px}
+  .impact p{color:var(--gris);font-size:14px;line-height:1.5}
 
   /* ---- Infolettre ---- */
   .news{background:linear-gradient(120deg,var(--rose),var(--lila));border-radius:28px;padding:44px 30px;text-align:center;color:#fff;margin:50px 0 60px;box-shadow:var(--ombre-forte)}
@@ -414,26 +435,26 @@
   <div class="services">
     <div class="service">
       <div class="s-ico" style="background:var(--rose-clair)">💬</div>
-      <h3>Consultation individuelle</h3>
-      <p>Une rencontre bienveillante avec une jeune : confiance en soi, estime, relations saines. <b>Les parents peuvent réserver et payer</b> pour leur ado.</p>
+      <h3>Coaching éducatif individuel</h3>
+      <p>Une rencontre d'accompagnement avec une jeune pour travailler la confiance, l'estime, les limites et les relations saines. <b>Les parents peuvent réserver</b> pour leur ado.</p>
       <button class="btn-reserver" onclick="reserver('une consultation individuelle')">Réserver une rencontre</button>
     </div>
     <div class="service">
       <div class="s-ico" style="background:var(--lila-pale)">🎤</div>
-      <h3>Conférence en milieu scolaire</h3>
-      <p>Ateliers et conférences dans les écoles : reconnaître une relation toxique, en parler, prévention et intelligence émotionnelle.</p>
+      <h3>Atelier de prévention jeunesse</h3>
+      <p>Des ateliers concrets pour reconnaître une relation toxique, parler de consentement, développer l'affirmation de soi et savoir demander de l'aide.</p>
       <button class="btn-reserver" onclick="reserver('une conférence scolaire')">Demander une conférence</button>
     </div>
     <div class="service">
       <div class="s-ico" style="background:var(--peche-pale)">🏠</div>
-      <h3>Intervention & organismes</h3>
-      <p>Interventions en maisons pour femmes et organismes communautaires. Un message d'espoir, d'outils concrets et de douceur.</p>
+      <h3>Parents & organismes</h3>
+      <p>Des rencontres pour donner aux adultes des mots simples, des repères et des outils afin de mieux soutenir une jeune, sans jugement.</p>
       <button class="btn-reserver" onclick="reserver('une intervention en organisme')">Nous contacter</button>
     </div>
   </div>
   <p class="avis-legal">
-    💗 RoseAura offre de l'<b>accompagnement, de la prévention et des outils éducatifs</b>, par expérience et par passion.
-    Ce n'est <b>pas</b> un service de psychologie, de psychothérapie ni un suivi médical, et ne remplace pas un professionnel de la santé.
+    💗 RoseAura offre du <b>coaching éducatif, de l'accompagnement, de la prévention et des outils concrets</b>.
+    Ce n'est <b>pas</b> un service de psychologie, de psychothérapie ni un suivi médical. L'accompagnement ne remplace pas un professionnel de la santé.
     En cas de besoin urgent : <b>Tel-jeunes 1&nbsp;800&nbsp;263-2266</b> · <b>Info-Social 811</b>.
   </p>
 </section>
@@ -442,12 +463,20 @@
   <div class="apropos">
     <div class="ap-photo">🌷</div>
     <div class="ap-txt">
-      <span class="kicker" style="position:static">💗 La fondatrice de RoseAura</span>
-      <h2>Melissa Aubry — une femme qui a le cœur des jeunes filles.</h2>
+      <span class="kicker" style="position:static">💗 Coach en prévention & accompagnement jeunesse</span>
+      <h2>Melissa Aubry — du vécu, des formations et une présence de terrain.</h2>
       <p>Moi aussi, j'ai vécu l'<b>intimidation</b>. J'ai vécu la <b>violence</b>. Je sais ce que c'est, de se sentir seule et de ne pas avoir les mots pour nommer ce qui fait mal. C'est de là que vient RoseAura — de mon vécu, transformé en mission.</p>
-      <p>Je ne suis <b>ni médecin, ni psychologue, ni thérapeute</b>, et je ne prétends pas l'être. Un psychologue, ce n'est pas toujours facile ni rapide à obtenir. Alors moi, j'offre autre chose : des <b>outils concrets, accessibles et humains</b>, pour prévenir plutôt que réparer.</p>
+      <p>J'ai suivi des <b>formations en accompagnement et en développement personnel</b>, puis j'ai mis ces apprentissages en pratique dans des suivis auprès de jeunes. Mon rôle : écouter, clarifier, transmettre des repères et aider chaque jeune à trouver ses propres mots et ses prochaines actions.</p>
+      <div class="expertise" aria-label="L'approche de Melissa Aubry">
+        <div class="expertise-item"><span>🎓</span><b>Formation continue</b><small>Des outils d'accompagnement et de développement personnel actualisés.</small></div>
+        <div class="expertise-item"><span>🤝</span><b>Suivis jeunesse</b><small>Une expérience de rencontres centrées sur l'écoute et les besoins de la jeune.</small></div>
+        <div class="expertise-item"><span>🧭</span><b>Coaching concret</b><small>Des repères, des exercices et de petites actions applicables au quotidien.</small></div>
+        <div class="expertise-item"><span>🛟</span><b>Limites claires</b><small>Orientation vers les bonnes ressources lorsque la situation dépasse le coaching.</small></div>
+      </div>
+      <p>Je ne suis <b>ni médecin, ni psychologue, ni psychothérapeute</b>. J'offre un accompagnement éducatif humain et accessible : des outils concrets pour prévenir, comprendre et agir plus tôt.</p>
       <p class="ap-parent">Aux parents, je dis simplement : <b>je te donne les outils pour que ta fille apprenne à bâtir sa confiance et son estime</b> — à son rythme, sans jargon, avec douceur.</p>
       <p>Reconnaître une relation toxique, le consentement, le contrôle coercitif, l'estime de soi… Tant de choses qu'une jeune devrait savoir <b>avant</b> d'en avoir besoin. Ça, c'est RoseAura : <b>prévenir, outiller, et semer de la douceur.</b> 🌸</p>
+      <p class="sources-pro">Approche inspirée des recommandations québécoises sur le soutien éducatif, l'affirmation positive de soi et la prévention de la violence : <a href="https://www.quebec.ca/education/prescolaire-primaire-et-secondaire/ressources-outils-reseau-scolaire/sante-bien-etre-jeunes/ekip/interventions-par-sujets-de-sante-et-de-bien-etre-en-contexte-scolaire/violence-interventions-en-contexte-scolaire" target="_blank" rel="noopener">Gouvernement du Québec</a>. Cadre professionnel : <a href="https://www.ordrepsy.qc.ca/fr/la-psychotherapie" target="_blank" rel="noopener">Ordre des psychologues du Québec</a>.</p>
     </div>
   </div>
 </section>
@@ -462,9 +491,14 @@
 </section>
 
 <section id="avis" class="wrap">
-  <h2 class="titre-section">💬 Ce que disent nos clientes</h2>
-  <p class="sous-titre">Plus de 2 300 avis vérifiés · 4,9/5 ★</p>
-  <div class="avis-grille" id="avisGrille"></div>
+  <h2 class="titre-section">🌱 Ce que l'accompagnement cherche à développer</h2>
+  <p class="sous-titre">Des compétences personnelles et sociales qui restent utiles longtemps</p>
+  <div class="impact-grille" id="avisGrille">
+    <article class="impact"><span>💬</span><h3>Mettre des mots</h3><p>Nommer ce qui se passe, distinguer un conflit d'une violence et parler sans honte.</p></article>
+    <article class="impact"><span>🧭</span><h3>Reconnaître les signaux</h3><p>Repérer le contrôle, l'isolement, le love bombing et les comportements qui dépassent une limite.</p></article>
+    <article class="impact"><span>🌷</span><h3>S'affirmer avec confiance</h3><p>Développer une affirmation positive de soi et prendre des décisions plus responsables.</p></article>
+    <article class="impact"><span>🛟</span><h3>Savoir demander de l'aide</h3><p>Identifier une personne sûre et utiliser rapidement les ressources adaptées au besoin.</p></article>
+  </div>
 </section>
 
 <section class="wrap">
@@ -782,6 +816,6 @@ function finQuiz(){
 }
 
 /* ---------- Init ---------- */
-rendreCats(); rendreGrille(); rendreAvis(); rendreQuiz(); majCompteur();
+rendreCats(); rendreGrille(); rendreQuiz(); majCompteur();
 $('#notePaiement').innerHTML='🔒 Paiement sécurisé — <b>Stripe à brancher</b>';
 </script>
