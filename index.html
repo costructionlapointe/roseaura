@@ -1,0 +1,549 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoseAura — Le rose te donne la force, l'information te donne le pouvoir</title>
+<style>
+  :root{
+    --rose:#ff7eb6; --rose-fonce:#ff5fa2; --rose-clair:#ffd6e8; --rose-pale:#fff0f6;
+    --lila:#c8a2ff; --lila-pale:#f3ebff;
+    --menthe:#7ee0c0; --menthe-pale:#e6fff7;
+    --peche:#ffb37e; --peche-pale:#fff1e6;
+    --jaune:#ffd86b; --bleu:#8fd3ff; --or:#e6a417;
+    --encre:#4a2c3f; --gris:#9a8592;
+    --blanc:#fffdfe; --vert:#2fbf82;
+    --ombre:0 10px 30px rgba(255,126,182,.18);
+    --ombre-forte:0 18px 50px rgba(200,60,130,.28);
+    --rayon:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    color:var(--encre); background:var(--rose-pale);
+    background-image:
+      radial-gradient(circle at 12% 6%, var(--lila-pale) 0, transparent 42%),
+      radial-gradient(circle at 88% 4%, var(--menthe-pale) 0, transparent 42%),
+      radial-gradient(circle at 50% 100%, var(--peche-pale) 0, transparent 55%);
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:'Trebuchet MS','Segoe UI',sans-serif;letter-spacing:-.5px}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+  .titre-section{text-align:center;font-size:clamp(26px,4vw,38px);margin:10px 0 6px}
+  .sous-titre{text-align:center;color:var(--gris);margin-bottom:28px;font-size:17px}
+
+  /* ---- Bandeau promo ---- */
+  .promo{
+    background:linear-gradient(90deg,var(--rose),var(--lila),var(--peche));
+    color:#fff;text-align:center;font-weight:700;font-size:14px;padding:9px 12px;letter-spacing:.2px;
+  }
+  .promo span{margin:0 14px;white-space:nowrap}
+
+  /* ---- Barre du haut ---- */
+  header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(255,253,254,.85);border-bottom:1px solid var(--rose-clair)}
+  .bar{display:flex;align-items:center;gap:18px;height:68px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:26px}
+  .logo .dot{width:38px;height:38px;border-radius:50%;background:conic-gradient(from 0deg,var(--rose),var(--lila),var(--menthe),var(--peche),var(--rose));box-shadow:var(--ombre);display:grid;place-items:center;color:#fff;font-size:20px}
+  .logo b{background:linear-gradient(90deg,var(--rose),var(--lila));-webkit-background-clip:text;background-clip:text;color:transparent}
+  nav.menu{display:flex;gap:6px;margin-left:auto}
+  nav.menu a{padding:8px 14px;border-radius:999px;font-weight:600;color:var(--gris);transition:.2s}
+  nav.menu a:hover{background:var(--rose-clair);color:var(--encre)}
+  .btn-panier{display:flex;align-items:center;gap:8px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--rose),var(--lila));color:#fff;padding:11px 18px;border-radius:999px;font-weight:700;font-size:15px;box-shadow:var(--ombre);transition:transform .15s}
+  .btn-panier:hover{transform:translateY(-2px)}
+  .pastille{background:#fff;color:var(--rose);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:13px;font-weight:800;padding:0 6px}
+
+  /* ---- Héros ---- */
+  .hero{text-align:center;padding:56px 0 26px}
+  .hero .kicker{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--rose-clair);color:var(--rose);font-weight:700;padding:7px 16px;border-radius:999px;margin-bottom:20px;box-shadow:var(--ombre);font-size:14px}
+  .hero h1{font-size:clamp(38px,6vw,66px);line-height:1.05}
+  .hero h1 span{background:linear-gradient(90deg,var(--rose),var(--lila),var(--peche));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{max-width:600px;margin:18px auto 0;font-size:19px;color:var(--gris);line-height:1.5}
+  .hero .cta{display:inline-flex;gap:12px;margin-top:26px;flex-wrap:wrap;justify-content:center}
+  .cta a{padding:14px 26px;border-radius:999px;font-weight:700;font-size:16px;transition:transform .15s}
+  .cta a:hover{transform:translateY(-2px)}
+  .cta .primaire{background:linear-gradient(90deg,var(--rose),var(--lila));color:#fff;box-shadow:var(--ombre-forte)}
+  .cta .secondaire{background:#fff;border:2px solid var(--rose-clair);color:var(--encre)}
+  .preuve-hero{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:26px;color:var(--gris);font-size:14px;font-weight:600}
+  .preuve-hero b{color:var(--encre)}
+  .etoiles-hero{color:var(--or)}
+
+  /* ---- Mission ---- */
+  .mission{background:linear-gradient(120deg,var(--rose),var(--lila));border-radius:28px;padding:44px 34px;color:#fff;box-shadow:var(--ombre-forte);margin:6px 0 30px;text-align:center}
+  .mission h2{font-size:clamp(24px,3.4vw,34px);line-height:1.15;max-width:760px;margin:14px auto 0}
+  .mission p{max-width:680px;margin:16px auto 0;font-size:17px;line-height:1.55;opacity:.96}
+  .mission b{color:#fff}
+  .mission-piliers{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:30px}
+  .mission-piliers div{background:rgba(255,255,255,.16);border-radius:18px;padding:20px 16px}
+  .mission-piliers span{font-size:30px}
+  .mission-piliers b{display:block;margin:8px 0 4px;font-size:17px}
+  .mission-piliers small{opacity:.9;font-size:13.5px}
+
+  /* ---- Prévention ---- */
+  .prev-titre{text-align:center;font-size:22px;margin:34px 0 18px}
+  .formes{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}
+  .forme{background:#fff;border-radius:18px;padding:20px 18px;box-shadow:var(--ombre);text-align:center}
+  .forme span{font-size:32px}
+  .forme b{display:block;margin:8px 0 6px;font-size:16px}
+  .forme p{color:var(--gris);font-size:13.5px;line-height:1.45}
+  .cage{background:linear-gradient(120deg,#5a3350,#7a3f68);color:#ffe3f1;border-radius:26px;padding:34px;margin:30px 0;box-shadow:var(--ombre-forte)}
+  .cage h3{color:#fff;font-size:23px;margin-bottom:12px}
+  .cage p{line-height:1.55;margin-bottom:12px}
+  .cage b{color:#fff}
+  .cage ul{list-style:none;display:grid;gap:8px;margin:14px 0}
+  .cage li{padding-left:26px;position:relative;line-height:1.4}
+  .cage li:before{content:'🔗';position:absolute;left:0}
+  .cage-cit{font-style:italic;font-size:18px;color:#fff;border-left:3px solid var(--rose);padding-left:14px;margin-top:16px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:820px;margin:0 auto}
+  .col-toxique,.col-sain{border-radius:20px;padding:20px;box-shadow:var(--ombre)}
+  .col-toxique{background:#fff0f2}.col-sain{background:var(--menthe-pale)}
+  .compare h4{text-align:center;font-size:18px;margin-bottom:14px}
+  .compare div>div{background:#fff;border-radius:12px;padding:11px 14px;margin-bottom:9px;font-size:14.5px;font-weight:600}
+  .prev-cit{text-align:center;font-size:18px;font-weight:700;color:var(--rose-fonce);margin:22px 0 10px}
+  .deux-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:14px}
+  .prev-bloc{background:#fff;border-radius:22px;padding:26px;box-shadow:var(--ombre)}
+  .prev-bloc h3{font-size:20px;margin-bottom:12px}
+  .prev-bloc .mini-t{font-weight:800;color:var(--rose-fonce);margin:12px 0 6px;font-size:14px}
+  .prev-bloc ul{list-style:none;display:grid;gap:7px}
+  .prev-bloc li{padding-left:22px;position:relative;color:var(--gris);line-height:1.4;font-size:14.5px}
+  .prev-bloc li:before{content:'💗';position:absolute;left:0;font-size:12px}
+  @media(max-width:560px){.compare{grid-template-columns:1fr}}
+
+  /* ---- Quiz ---- */
+  .quiz-boite{background:linear-gradient(120deg,var(--lila),var(--rose));border-radius:28px;padding:40px 30px;color:#fff;text-align:center;box-shadow:var(--ombre-forte);margin:50px 0}
+  .quiz-boite h2{font-size:30px}
+  .quiz-intro{opacity:.95;margin:10px 0 24px;font-size:16px}
+  .quiz-q{background:rgba(255,255,255,.14);border-radius:20px;padding:24px;max-width:620px;margin:0 auto;text-align:left}
+  .quiz-q .num{font-size:13px;font-weight:800;opacity:.8;letter-spacing:1px}
+  .quiz-q h3{font-size:20px;margin:6px 0 18px;color:#fff}
+  .quiz-opt{display:block;width:100%;text-align:left;background:#fff;color:var(--encre);border:2px solid transparent;border-radius:14px;padding:13px 16px;margin-bottom:10px;font-size:15px;font-weight:600;cursor:pointer;transition:.15s}
+  .quiz-opt:hover{transform:translateX(3px)}
+  .quiz-opt.bon{background:var(--menthe);border-color:#2fbf82;color:var(--encre)}
+  .quiz-opt.mauvais{background:#ffdfe6;border-color:var(--rose-fonce)}
+  .quiz-fb{background:#fff;color:var(--encre);border-radius:14px;padding:16px;margin-top:6px;font-size:14.5px;line-height:1.5;text-align:left}
+  .quiz-fb b{color:var(--rose-fonce)}
+  .quiz-suivant{margin-top:16px;border:none;background:var(--encre);color:#fff;padding:12px 26px;border-radius:999px;font-weight:800;cursor:pointer;font-size:15px}
+  .quiz-score{max-width:620px;margin:20px auto 0;font-size:20px;font-weight:800}
+
+  /* ---- Ressources ---- */
+  .ressources{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .ress{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--ombre);text-align:center;border:2px solid transparent}
+  .ress.urgence{border-color:var(--rose-fonce);background:#fff0f2}
+  .ress b{display:block;font-size:15px;margin-bottom:8px}
+  .ress a{display:block;font-size:22px;font-weight:800;color:var(--rose-fonce);margin-bottom:6px}
+  .ress span{color:var(--gris);font-size:13px}
+
+  /* ---- Catégories ---- */
+  .cats{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;padding:6px 0 34px}
+  .chip{border:2px solid transparent;background:#fff;padding:10px 18px;border-radius:999px;font-weight:700;cursor:pointer;color:var(--gris);box-shadow:var(--ombre);transition:.2s;font-size:15px}
+  .chip:hover{transform:translateY(-2px)}
+  .chip.actif[data-cat="tous"]{background:linear-gradient(90deg,var(--rose),var(--lila));color:#fff}
+  .chip.actif[data-cat="securite"]{background:linear-gradient(90deg,var(--rose-fonce),var(--lila));color:#fff}
+  .chip.actif[data-cat="deco"]{background:var(--rose);color:#fff}
+  .chip.actif[data-cat="papeterie"]{background:var(--lila);color:#fff}
+  .chip.actif[data-cat="ebooks"]{background:var(--menthe);color:var(--encre)}
+  .chip.actif[data-cat="formations"]{background:var(--peche);color:#fff}
+  .chip.actif[data-cat="gourmandises"]{background:var(--jaune);color:var(--encre)}
+
+  /* ---- Grille produits ---- */
+  .grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;padding-bottom:24px}
+  .carte{background:var(--blanc);border-radius:var(--rayon);overflow:hidden;box-shadow:var(--ombre);transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column;position:relative}
+  .carte:hover{transform:translateY(-6px);box-shadow:var(--ombre-forte)}
+  .vignette{height:170px;display:grid;place-items:center;font-size:64px;position:relative}
+  .badge-cat{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.9);padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;color:var(--encre)}
+  .badge-promo{position:absolute;top:12px;right:12px;background:var(--rose-fonce);color:#fff;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:800;box-shadow:0 4px 12px rgba(255,95,162,.5)}
+  .badge-vedette{position:absolute;top:44px;right:12px;background:var(--jaune);color:var(--encre);padding:5px 11px;border-radius:999px;font-size:11px;font-weight:800}
+  .infos{padding:16px 18px 20px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .infos h3{font-size:18px}
+  .note-ligne{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gris)}
+  .etoiles{color:var(--or);letter-spacing:1px}
+  .infos .desc{color:var(--gris);font-size:14px;line-height:1.45;flex:1}
+  .ligne-prix{display:flex;align-items:center;justify-content:space-between;margin-top:6px;gap:8px}
+  .prix{font-size:22px;font-weight:800;color:var(--rose-fonce)}
+  .prix .avant{font-size:14px;color:var(--gris);text-decoration:line-through;margin-right:6px;font-weight:600}
+  .btn-add{border:none;cursor:pointer;background:var(--encre);color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;font-size:14px;transition:.15s;white-space:nowrap}
+  .btn-add:hover{background:var(--rose)}
+  .btn-add.ok{background:var(--menthe);color:var(--encre)}
+  .badge-bientot{position:absolute;top:12px;right:12px;background:var(--lila);color:#fff;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:800}
+  .est-bientot .vignette{filter:grayscale(.25);opacity:.85}
+  .btn-bientot{background:var(--lila)}
+  .btn-bientot:hover{background:var(--lila)}
+
+  /* ---- Services / accompagnement ---- */
+  .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;padding-bottom:10px}
+  .service{background:#fff;border-radius:var(--rayon);padding:26px 24px;box-shadow:var(--ombre);display:flex;flex-direction:column;text-align:center;border:2px solid transparent;transition:.2s}
+  .service:hover{transform:translateY(-5px);border-color:var(--rose-clair)}
+  .s-ico{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:30px;margin:0 auto 14px}
+  .service h3{font-size:20px;margin-bottom:8px}
+  .service p{color:var(--gris);font-size:14.5px;line-height:1.5;flex:1}
+  .service b{color:var(--encre)}
+  .btn-reserver{margin-top:18px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--rose),var(--lila));color:#fff;padding:12px 18px;border-radius:999px;font-weight:800;font-size:14.5px;transition:transform .15s}
+  .btn-reserver:hover{transform:translateY(-2px)}
+
+  .avis-legal{background:#fff;border:1px dashed var(--rose-clair);border-radius:16px;padding:16px 20px;margin-top:22px;font-size:13px;color:var(--gris);line-height:1.55;text-align:center}
+  .avis-legal b{color:var(--encre)}
+
+  /* ---- À propos ---- */
+  .apropos{background:#fff;border-radius:28px;padding:34px;box-shadow:var(--ombre);display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;margin:50px 0 10px}
+  .ap-photo{width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,var(--rose-clair),var(--lila-pale));display:grid;place-items:center;font-size:70px;box-shadow:var(--ombre)}
+  .ap-txt h2{font-size:clamp(22px,3vw,30px);margin:10px 0}
+  .ap-txt p{color:var(--gris);line-height:1.6;margin-top:10px;font-size:15.5px}
+  .ap-txt b{color:var(--encre)}
+  .ap-parent{background:var(--rose-pale);border-left:4px solid var(--rose);border-radius:0 12px 12px 0;padding:12px 16px;font-size:15.5px}
+  @media(max-width:640px){.apropos{grid-template-columns:1fr;text-align:center}.ap-photo{margin:0 auto}}
+
+  /* ---- Bandeau confiance ---- */
+  .confiance{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;padding:44px 0 10px}
+  .confiance div{background:#fff;border-radius:var(--rayon);padding:22px;text-align:center;box-shadow:var(--ombre)}
+  .confiance .em{font-size:30px}
+  .confiance h4{margin:8px 0 4px}
+  .confiance p{color:var(--gris);font-size:14px}
+
+  /* ---- Témoignages ---- */
+  .avis-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;padding-bottom:20px}
+  .avis{background:#fff;border-radius:var(--rayon);padding:24px;box-shadow:var(--ombre)}
+  .avis .etoiles{font-size:18px;margin-bottom:10px}
+  .avis p{font-style:italic;line-height:1.55;color:var(--encre)}
+  .avis .qui{display:flex;align-items:center;gap:10px;margin-top:16px}
+  .avis .rond{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:20px;color:#fff}
+  .avis .qui b{display:block}
+  .avis .qui span{color:var(--gris);font-size:13px}
+
+  /* ---- Infolettre ---- */
+  .news{background:linear-gradient(120deg,var(--rose),var(--lila));border-radius:28px;padding:44px 30px;text-align:center;color:#fff;margin:50px 0 60px;box-shadow:var(--ombre-forte)}
+  .news h2{font-size:30px}
+  .news p{opacity:.95;margin:10px 0 22px;font-size:17px}
+  .news form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+  .news input{flex:1;min-width:200px;border:none;border-radius:999px;padding:14px 20px;font-size:15px}
+  .news button{border:none;background:var(--encre);color:#fff;padding:14px 26px;border-radius:999px;font-weight:800;cursor:pointer;font-size:15px}
+  .news small{display:block;opacity:.85;margin-top:14px}
+
+  /* ---- Pied ---- */
+  footer{background:var(--encre);color:#ffd9ea;padding:40px 0;text-align:center}
+  footer b{color:#fff}
+  footer .mini{opacity:.7;font-size:13px;margin-top:10px}
+
+  /* ---- Panier ---- */
+  .voile{position:fixed;inset:0;background:rgba(74,44,63,.45);opacity:0;pointer-events:none;transition:.25s;z-index:60}
+  .voile.ouvert{opacity:1;pointer-events:auto}
+  .tiroir{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--rose-pale);z-index:70;transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.2)}
+  .tiroir.ouvert{transform:translateX(0)}
+  .tiroir-top{display:flex;align-items:center;justify-content:space-between;padding:22px 22px 8px}
+  .tiroir-top h2{font-size:22px}
+  .fermer{background:#fff;border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:18px;box-shadow:var(--ombre)}
+  /* barre livraison gratuite */
+  .livraison{margin:4px 22px 10px;background:#fff;border-radius:14px;padding:12px 14px;box-shadow:var(--ombre)}
+  .livraison p{font-size:13px;margin-bottom:8px;font-weight:600}
+  .livraison .jauge{height:8px;background:var(--rose-clair);border-radius:999px;overflow:hidden}
+  .livraison .jauge b{display:block;height:100%;background:linear-gradient(90deg,var(--rose),var(--menthe));width:0;transition:width .4s}
+  .items{flex:1;overflow:auto;padding:6px 22px}
+  .item{background:#fff;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center;margin-bottom:12px;box-shadow:var(--ombre)}
+  .item .em{font-size:32px;width:46px;text-align:center}
+  .item .m{flex:1}
+  .item .m b{font-size:15px}
+  .item .m span{color:var(--gris);font-size:13px}
+  .qte{display:flex;align-items:center;gap:8px;margin-top:6px}
+  .qte button{width:26px;height:26px;border-radius:50%;border:none;background:var(--rose-clair);cursor:pointer;font-weight:800;color:var(--encre)}
+  .qte b{min-width:20px;text-align:center}
+  .item .sup{background:none;border:none;cursor:pointer;color:var(--gris);font-size:18px;align-self:flex-start}
+  .vide{text-align:center;color:var(--gris);padding:60px 20px}
+  .vide .em{font-size:50px;display:block;margin-bottom:10px}
+  .tiroir-bas{padding:18px 22px;border-top:1px solid var(--rose-clair);background:#fff}
+  .total{display:flex;justify-content:space-between;font-size:20px;font-weight:800;margin-bottom:12px}
+  .btn-payer{width:100%;border:none;cursor:pointer;padding:16px;border-radius:14px;font-size:17px;font-weight:800;color:#fff;background:linear-gradient(90deg,var(--rose),var(--lila));box-shadow:var(--ombre-forte);transition:transform .15s}
+  .btn-payer:hover{transform:translateY(-2px)}
+  .btn-payer:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .note-paiement{font-size:12px;color:var(--gris);text-align:center;margin-top:10px;line-height:1.4}
+
+  /* ---- Fenêtre ---- */
+  .modal{position:fixed;inset:0;z-index:90;display:none;place-items:center;padding:20px}
+  .modal.ouvert{display:grid}
+  .modal .boite{background:#fff;border-radius:24px;max-width:440px;width:100%;padding:30px;box-shadow:var(--ombre-forte);text-align:center}
+  .modal .em{font-size:54px}
+  .modal h2{margin:12px 0 8px}
+  .modal p{color:var(--gris);line-height:1.5}
+  .modal code{background:var(--rose-pale);padding:2px 7px;border-radius:6px;font-size:13px;color:var(--rose-fonce)}
+  .modal .ferme{margin-top:20px;border:none;background:var(--encre);color:#fff;padding:12px 26px;border-radius:999px;font-weight:700;cursor:pointer}
+
+  @media(max-width:640px){nav.menu{display:none}.hero{padding:36px 0 16px}.promo span:nth-child(3){display:none}}
+</style>
+
+<div class="promo">
+  <span>🚚 Livraison GRATUITE dès 50 $<…3366 tokens truncated…ve('ouvert')">Compris 💛</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ROSAURA — boutique dropshipping, mono-fichier
+   MODÈLE : aucun inventaire. Le fournisseur expédie pour toi.
+
+   ▶ POUR ENCAISSER DE VRAIS PAIEMENTS (Stripe) :
+     1. Compte gratuit sur stripe.com
+     2. Un "Payment Link" par produit → colle-le dans le champ "stripe"
+     OU un lien de caisse groupé dans CONFIG.stripeCheckoutGroupe
+
+   ▶ POUR LE DROPSHIPPING (fournisseur) :
+     - "fournisseur" = où provient le produit (AliExpress/CJ/Printful…)
+     - "cout" = ton prix d'achat (pour calculer ta marge)
+     - À chaque commande payée, tu transmets l'adresse au fournisseur
+       (manuel au début ; automatisable ensuite via Shopify+DSers).
+   ========================================================= */
+
+const CONFIG = {
+  devise:'$',
+  livraisonGratuiteDes:50,        // seuil livraison gratuite
+  stripeCheckoutGroupe:'',        // lien de caisse Stripe pour tout le panier (optionnel)
+};
+
+const CATEGORIES = [
+  {id:'tous',nom:'✨ Tout'},
+  {id:'securite',nom:'🛡️ Sécurité & bien-être'},
+  {id:'deco',nom:'🏡 Déco'},
+  {id:'papeterie',nom:'✏️ Papeterie'},
+  {id:'ebooks',nom:'📚 Ebooks'},
+  {id:'formations',nom:'🎓 Formations'},
+  {id:'gourmandises',nom:'🍬 Gourmandises'},
+];
+
+/* prix = prix de vente | avant = prix barré | cout = coût fournisseur (marge)
+   note = /5 | avis = nb d'avis | badge = 'vente'|'coup'|'' | stripe/fournisseur = liens */
+const PRODUITS = [
+  {id:'s1', nom:'Languettes test « verre protégé » (x10)', cat:'securite', prix:19, avant:29, cout:6, emoji:'🧪', couleur:'var(--rose-clair)', note:4.9,avis:512,badge:'vente', desc:'Détecte discrètement le GHB/kétamine dans un verre. Une goutte, un résultat en secondes. Se glisse dans le sac à main.', stripe:'', fournisseur:''},
+  {id:'s2', nom:'Sous-verre détecteur discret (x5)', cat:'securite', prix:24, avant:35, cout:8, emoji:'🩷', couleur:'var(--lila-pale)', note:4.8,avis:287,badge:'coup', desc:'Jolis sous-verres roses avec zones de test intégrées. Élégants sur la table, protecteurs dans la soirée.', stripe:'', fournisseur:''},
+  {id:'s3', nom:'Alarme personnelle de poche 130 dB', cat:'securite', prix:22, avant:32, cout:7, emoji:'🔔', couleur:'var(--peche-pale)', note:4.9,avis:198,badge:'', desc:'Mini alarme à clé, son puissant + lumière. Se déclenche d’un geste. Rose doux, effet dissuasif immédiat.', stripe:'', fournisseur:''},
+  {id:'s4', nom:'Ebook — Ton intelligence émotionnelle', cat:'securite', prix:14, avant:22, cout:0, emoji:'💗', couleur:'var(--rose-pale)', note:5.0,avis:164,badge:'coup', desc:'Reconnaître ses émotions, poser ses limites, se faire confiance. Guide PDF pensé pour les jeunes femmes.', stripe:'', fournisseur:''},
+  {id:'p1', nom:'Calendrier 2026 fleuri',    cat:'papeterie',   prix:24, avant:34, cout:8,  emoji:'📅', couleur:'var(--lila-pale)',  note:4.9,avis:412,badge:'vente', desc:'Grand calendrier mural, illustrations florales, papier épais.', stripe:'', fournisseur:''},
+  {id:'p2', nom:'Cahier de coloriage anti-stress',cat:'papeterie',prix:16,avant:24,cout:5, emoji:'🖍️',couleur:'var(--menthe-pale)',note:4.8,avis:289,badge:'', desc:'40 pages détente, motifs jardins et mandalas.', stripe:'', fournisseur:''},
+  {id:'p3', nom:'Coussin cœur tout doux',    cat:'deco',        prix:34, avant:49, cout:11, emoji:'💗', couleur:'var(--rose-clair)', note:5.0,avis:531,badge:'coup', desc:'Ultra moelleux, housse lavable. Le chouchou du salon.', stripe:'', fournisseur:''},
+  {id:'p4', nom:'Bougie « Douceur »',        cat:'deco',        prix:22, avant:30, cout:7,  emoji:'🕯️',couleur:'var(--peche-pale)', note:4.9,avis:377,badge:'', desc:'Cire de soja, vanille & pivoine, 40 h de flamme.', stripe:'', fournisseur:''},
+  {id:'p5', nom:'Ebook — Vivre en rose',     cat:'ebooks',      prix:12, avant:19, cout:0,  emoji:'📖', couleur:'var(--rose-pale)',  note:4.7,avis:158,badge:'', desc:'Guide PDF pour semer de la beauté au quotidien. Livraison instantanée.', stripe:'', fournisseur:''},
+  {id:'p6', nom:'Formation — Aquarelle 101', cat:'formations',  prix:89, avant:149,cout:0,  emoji:'🎨', couleur:'var(--lila-pale)',  note:4.9,avis:96, badge:'coup', desc:'6 modules vidéo + fiches PDF. Accès à vie.', stripe:'', fournisseur:''},
+  {id:'p7', nom:'Boîte gourmande surprise',  cat:'gourmandises',prix:39, avant:55, cout:15, emoji:'🍫', couleur:'var(--peche-pale)', note:4.8,avis:203,badge:'vente', desc:'Assortiment de petites douceurs artisanales.', stripe:'', fournisseur:''},
+  {id:'p8', nom:'Set de 30 stickers mignons',cat:'papeterie',   prix:9,  avant:15, cout:2,  emoji:'🌸', couleur:'var(--menthe-pale)',note:4.9,avis:644,badge:'', desc:'Autocollants pour agenda et journaling.', stripe:'', fournisseur:''},
+  {id:'p9', nom:'Vase minimaliste',          cat:'deco',        prix:28, avant:39, cout:9,  emoji:'🏺', couleur:'var(--rose-clair)', note:4.7,avis:142,badge:'', desc:'Céramique mate, courbes douces, format bouquet.', stripe:'', fournisseur:''},
+  {id:'p10',nom:'Ebook — 30 recettes douces',cat:'ebooks',      prix:14, avant:22, cout:0,  emoji:'🧁', couleur:'var(--rose-pale)',  note:4.8,avis:187,badge:'', desc:'Desserts réconfortants, PDF illustré. Téléchargement immédiat.', stripe:'', fournisseur:''},
+  {id:'e1', nom:'Ebook — Le consentement, expliqué simplement', cat:'ebooks', prix:15, avant:24, cout:0, emoji:'💛', couleur:'var(--menthe-pale)', note:5.0,avis:142,badge:'vente', desc:'Pour préados et ados : c’est quoi le consentement, comment le dire, le respecter. Guide clair qu’un parent offre à sa fille.', stripe:'', fournisseur:''},
+  {id:'e2', nom:'Ebook — Reconnaître le contrôle coercitif', cat:'ebooks', prix:16, avant:26, cout:0, emoji:'🔓', couleur:'var(--lila-pale)', note:4.9,avis:97,badge:'coup', desc:'Les signes subtils d’une relation qui contrôle, isole, manipule — et comment s’en protéger. Pour jeunes filles et parents.', stripe:'', fournisseur:''},
+  {id:'e3', nom:'Ebook parent — Parler à ta fille (préado)', cat:'ebooks', prix:18, avant:29, cout:0, emoji:'👩‍👧', couleur:'var(--peche-pale)', note:5.0,avis:83,badge:'', desc:'Aborder relations, corps, estime de soi et sécurité avec ta préado, sans malaise. Scripts et mots justes inclus.', stripe:'', fournisseur:''},
+  {id:'p11',nom:'Formation — Journaling',    cat:'formations',  prix:59, avant:99, cout:0,  emoji:'📝', couleur:'var(--lila-pale)',  note:4.9,avis:74, badge:'', desc:'Prendre soin de soi par l’écriture. 4 semaines guidées.', stripe:'', fournisseur:''},
+  {id:'f1', nom:'Formation — Reconnaître une relation toxique', cat:'formations', prix:39, avant:69, cout:0, emoji:'🚩', couleur:'var(--rose-clair)', note:5.0,avis:131,badge:'coup', desc:'Repérer les signes, poser ses limites, et savoir comment en parler à une amie. Vidéos + guide PDF. Pour ados et jeunes adultes.', stripe:'', fournisseur:''},
+  {id:'f2', nom:'Formation — Estime & confiance de soi', cat:'formations', prix:49, avant:89, cout:0, emoji:'🌷', couleur:'var(--lila-pale)', note:4.9,avis:108,badge:'vente', desc:'Comprendre la différence estime/confiance, se parler avec bienveillance, s’affirmer. Parcours guidé pour les jeunes.', stripe:'', fournisseur:''},
+  {id:'p12',nom:'Guimauves maison (x12)',    cat:'gourmandises',prix:11, avant:16, cout:4,  emoji:'🍡', couleur:'var(--peche-pale)', note:4.9,avis:118,badge:'', desc:'Fondantes, saveur framboise. Le petit plaisir du soir.', stripe:'', fournisseur:''},
+];
+
+/* Produits pas encore livrables (physiques, fournisseur à brancher) → affichés « Bientôt disponible ».
+   Les autres (ebooks + formations = numérique) sont vendables tout de suite. */
+const BIENTOT = new Set(['s1','s2','s3','p1','p2','p8','p3','p4','p9','p7','p12']);
+
+const TEMOIGNAGES = [
+  {texte:'Emballage à tomber, tout était parfait. Ma déco a changé de vibe !', qui:'Marie-Ève', ville:'Québec', em:'🌷', bg:'var(--rose)'},
+  {texte:'Le calendrier fleuri est encore plus beau en vrai. Je recommande à 100 %.', qui:'Sophie', ville:'Lévis', em:'🌼', bg:'var(--lila)'},
+  {texte:'Livraison super rapide et le petit mot fait tellement plaisir. Merci RoseAura ♡', qui:'Julie', ville:'Trois-Rivières', em:'💐', bg:'var(--peche)'},
+  {texte:'Les languettes tiennent dans ma pochette, je sors l’esprit tranquille. Un indispensable.', qui:'Camille', ville:'Montréal', em:'🛡️', bg:'var(--rose-fonce)'},
+];
+
+/* ---------- État ---------- */
+let panier = JSON.parse(localStorage.getItem('rosaura_panier') || '{}');
+let catActive = 'tous';
+const $ = s => document.querySelector(s);
+const fmt = n => n.toFixed(2).replace('.', ',') + ' ' + CONFIG.devise;
+const etoiles = n => '★★★★★☆☆☆☆☆'.slice(5-Math.round(n),10-Math.round(n));
+
+/* ---------- Catégories ---------- */
+function rendreCats(){
+  $('#cats').innerHTML = CATEGORIES.map(c =>
+    `<button class="chip ${c.id===catActive?'actif':''}" data-cat="${c.id}" onclick="filtrer('${c.id}')">${c.nom}</button>`
+  ).join('');
+}
+function filtrer(id){ catActive=id; rendreCats(); rendreGrille(); }
+
+/* ---------- Grille ---------- */
+function rendreGrille(){
+  let liste = catActive==='tous' ? PRODUITS.slice() : PRODUITS.filter(p=>p.cat===catActive);
+  liste.sort((a,b)=>(BIENTOT.has(a.id)?1:0)-(BIENTOT.has(b.id)?1:0)); // disponibles d'abord
+  const nomCat = {securite:'Sécurité',deco:'Déco',papeterie:'Papeterie',ebooks:'Ebook',formations:'Formation',gourmandises:'Gourmandise'};
+  const badges = {vente:'🔥 Meilleure vente', coup:'💖 Coup de cœur'};
+  $('#grille').innerHTML = liste.map(p=>{
+    const rabais = p.avant ? Math.round((1-p.prix/p.avant)*100) : 0;
+    const bientot = BIENTOT.has(p.id);
+    return `<div class="carte${bientot?' est-bientot':''}">
+      <div class="vignette" style="background:${p.couleur}">
+        <span class="badge-cat">${nomCat[p.cat]||''}</span>
+        ${bientot?'<span class="badge-bientot">⏳ Bientôt</span>':(rabais?`<span class="badge-promo">-${rabais}%</span>`:'')}
+        ${!bientot&&p.badge?`<span class="badge-vedette">${badges[p.badge]}</span>`:''}
+        ${p.emoji}
+      </div>
+      <div class="infos">
+        <h3>${p.nom}</h3>
+        ${bientot?'<div class="note-ligne" style="color:var(--lila)"><b>Bientôt disponible</b></div>':`<div class="note-ligne"><span class="etoiles">${etoiles(p.note)}</span> ${p.note.toFixed(1)} (${p.avis})</div>`}
+        <p class="desc">${p.desc}</p>
+        <div class="ligne-prix">
+          <span class="prix">${p.avant?`<span class="avant">${fmt(p.avant)}</span>`:''}${fmt(p.prix)}</span>
+          ${bientot
+            ? `<button class="btn-add btn-bientot" onclick="avertir('${p.id}')">M'avertir 🔔</button>`
+            : `<button class="btn-add" id="add-${p.id}" onclick="ajouter('${p.id}')">Ajouter +</button>`}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- Témoignages ---------- */
+function rendreAvis(){
+  $('#avisGrille').innerHTML = TEMOIGNAGES.map(t=>`
+    <div class="avis">
+      <div class="etoiles">★★★★★</div>
+      <p>« ${t.texte} »</p>
+      <div class="qui">
+        <span class="rond" style="background:${t.bg}">${t.em}</span>
+        <span><b>${t.qui}</b><span>${t.ville} · Achat vérifié</span></span>
+      </div>
+    </div>`).join('');
+}
+
+/* ---------- Panier ---------- */
+function sauver(){ localStorage.setItem('rosaura_panier', JSON.stringify(panier)); }
+function ajouter(id){
+  if(BIENTOT.has(id)) return; // pas encore livrable
+  panier[id]=(panier[id]||0)+1; sauver(); majCompteur(); rendrePanier();
+  const b=$('#add-'+id);
+  if(b){ b.textContent='Ajouté ✓'; b.classList.add('ok'); setTimeout(()=>{b.textContent='Ajouter +';b.classList.remove('ok')},900); }
+}
+function changerQte(id,d){ panier[id]=(panier[id]||0)+d; if(panier[id]<=0) delete panier[id]; sauver(); majCompteur(); rendrePanier(); }
+function retirer(id){ delete panier[id]; sauver(); majCompteur(); rendrePanier(); }
+function majCompteur(){ $('#compteur').textContent = Object.values(panier).reduce((a,b)=>a+b,0); }
+function totalPanier(){ return Object.entries(panier).reduce((t,[id,q])=>{const p=PRODUITS.find(x=>x.id===id);return t+(p?p.prix*q:0)},0); }
+
+function rendrePanier(){
+  const ids=Object.keys(panier);
+  if(ids.length===0){
+    $('#items').innerHTML=`<div class="vide"><span class="em">🌷</span>Ton panier est vide.<br>Ajoute-y de jolies choses !</div>`;
+  } else {
+    $('#items').innerHTML=ids.map(id=>{
+      const p=PRODUITS.find(x=>x.id===id); if(!p) return '';
+      const q=panier[id];
+      return `<div class="item">
+        <div class="em">${p.emoji}</div>
+        <div class="m"><b>${p.nom}</b><br><span>${fmt(p.prix)}</span>
+          <div class="qte"><button onclick="changerQte('${id}',-1)">−</button><b>${q}</b><button onclick="changerQte('${id}',1)">+</button></div>
+        </div>
+        <button class="sup" onclick="retirer('${id}')" title="Retirer">🗑️</button>
+      </div>`;
+    }).join('');
+  }
+  const total=totalPanier();
+  $('#totalPrix').textContent=fmt(total);
+  $('#btnPayer').disabled=ids.length===0;
+  // barre livraison gratuite
+  const seuil=CONFIG.livraisonGratuiteDes;
+  const reste=Math.max(0,seuil-total);
+  $('#jaugeBarre').style.width=Math.min(100,total/seuil*100)+'%';
+  $('#livraisonTxt').innerHTML = reste>0
+    ? `Plus que <b>${fmt(reste)}</b> pour la <b>livraison gratuite</b> ! 🚚`
+    : `🎉 Bravo, tu as la <b>livraison gratuite</b> !`;
+}
+
+function ouvrirPanier(){ $('#voile').classList.add('ouvert'); $('#tiroir').classList.add('ouvert'); rendrePanier(); }
+function fermerPanier(){ $('#voile').classList.remove('ouvert'); $('#tiroir').classList.remove('ouvert'); }
+
+/* ---------- Paiement ---------- */
+function payer(){
+  if(CONFIG.stripeCheckoutGroupe){ window.location.href=CONFIG.stripeCheckoutGroupe; return; }
+  const ids=Object.keys(panier);
+  if(ids.length===1){ const p=PRODUITS.find(x=>x.id===ids[0]); if(p&&p.stripe){ window.location.href=p.stripe; return; } }
+  $('#modalEmoji').textContent='🌸';
+  $('#modalTitre').textContent='Presque prêt !';
+  $('#modalTexte').innerHTML =
+    `Ta boutique fonctionne 🎉 Total : <b>${fmt(totalPanier())}</b>.<br><br>`+
+    `Pour encaisser de vrais paiements, ajoute tes liens <code>Stripe</code> dans le fichier `+
+    `(champ <code>stripe</code> de chaque produit, ou <code>stripeCheckoutGroupe</code>). Je te montre comment !`;
+  $('#modal').classList.add('ouvert');
+}
+
+/* ---------- Avertir (produit à venir) ---------- */
+function avertir(id){
+  const p=PRODUITS.find(x=>x.id===id); if(!p) return;
+  $('#modalEmoji').textContent='🔔';
+  $('#modalTitre').textContent='On te préviendra !';
+  $('#modalTexte').innerHTML=`« <b>${p.nom}</b> » arrive bientôt 💗<br><br>Inscris-toi à l'infolettre RoseAura et tu seras avertie dès son arrivée.`;
+  $('#modal').classList.add('ouvert');
+}
+
+/* ---------- Réservation service ---------- */
+function reserver(quoi){
+  $('#modalEmoji').textContent='🤍';
+  $('#modalTitre').textContent='Réserver — '+quoi;
+  $('#modalTexte').innerHTML =
+    `Merci de ton intérêt pour <b>${quoi}</b> 💗<br><br>`+
+    `Écris-nous à <code>info@lesconstructionslapointe.com</code> avec tes disponibilités, `+
+    `et on te revient rapidement.<br><br>`+
+    `<a href="mailto:info@lesconstructionslapointe.com?subject=${encodeURIComponent('RoseAura — '+quoi)}" `+
+    `style="display:inline-block;background:var(--rose);color:#fff;padding:10px 20px;border-radius:999px;font-weight:800;text-decoration:none">✉️ Ouvrir mon courriel</a>`;
+  $('#modal').classList.add('ouvert');
+}
+
+/* ---------- Infolettre ---------- */
+function inscrire(e){
+  e.preventDefault(); e.target.reset();
+  $('#modalEmoji').textContent='💌';
+  $('#modalTitre').textContent='Bienvenue chez RoseAura !';
+  $('#modalTexte').innerHTML='Merci ! Ton code <code>ROSAURA15</code> t’attend pour -15 % sur ta première commande. 💗';
+  $('#modal').classList.add('ouvert');
+}
+
+/* ---------- Quiz prévention ---------- */
+const QUIZ = [
+  {q:'La violence conjugale commence toujours par des coups physiques.',
+   opts:['Vrai','Faux'], bon:1,
+   fb:'<b>Faux.</b> Elle commence souvent par des formes psychologiques, verbales ou du contrôle coercitif, bien avant tout geste physique. Parfois, les coups n\'arrivent jamais.'},
+  {q:'Le contrôle coercitif, c\'est quoi ?',
+   opts:['Un seul incident violent isolé','Un schéma répété de contrôle, surveillance et isolement','De la jalousie normale dans un couple','Lire les messages par curiosité'], bon:1,
+   fb:'<b>Un schéma répété.</b> Ce n\'est pas un incident isolé : il s\'installe doucement et peut ressembler à de l\'amour ou de la jalousie au début, mais s\'intensifie avec le temps.'},
+  {q:'Si une amie semble changer depuis qu\'elle est en couple, je devrais…',
+   opts:['Lui donner un ultimatum : « C\'est lui ou moi »','Ne rien dire pour ne pas m\'en mêler','L\'approcher avec douceur : « Je m\'inquiète pour toi »','En parler à tout le monde autour d\'elle'], bon:2,
+   fb:'<b>Approcher avec bienveillance.</b> Parler en « je » sans jugement garde le lien ouvert. Les ultimatums poussent souvent la personne vers son partenaire ; le silence la laisse seule.'},
+  {q:'Lequel de ces comportements est un signal d\'alarme ?',
+   opts:['Ton partenaire t\'encourage à voir tes amies','Vous prenez des décisions ensemble','Il dit « je t\'aime » après 2 semaines et parle déjà de votre avenir','Tu te sens libre d\'être toi-même'], bon:2,
+   fb:'<b>Love bombing.</b> Dire « je t\'aime » très vite et couvrir de cadeaux peut créer une dépendance rapide — souvent utilisé pour établir un contrôle.'},
+  {q:'Pour avoir de l\'aide ou des doutes sur ma relation, je peux appeler :',
+   opts:['Seulement la police','SOS Violence Conjugale — 1 800 363-9010','Je dois tout régler moi-même','Seulement si je suis frappée'], bon:1,
+   fb:'<b>SOS Violence Conjugale.</b> Disponible 24h/24, 7j/7, gratuit et confidentiel — pour toi ou pour une amie. Tu n\'as pas besoin d\'être frappée pour mériter de l\'aide.'},
+];
+let qIndex=0, qScore=0, qRepondu=false;
+function rendreQuiz(){
+  qRepondu=false;
+  const item=QUIZ[qIndex];
+  $('#quizScore').innerHTML='';
+  $('#quizZone').innerHTML=`
+    <div class="quiz-q">
+      <div class="num">QUESTION ${qIndex+1} / ${QUIZ.length}</div>
+      <h3>${item.q}</h3>
+      <div id="quizOpts">${item.opts.map((o,i)=>`<button class="quiz-opt" onclick="repondre(${i})">${o}</button>`).join('')}</div>
+      <div id="quizFb"></div>
+    </div>`;
+}
+function repondre(i){
+  if(qRepondu) return; qRepondu=true;
+  const item=QUIZ[qIndex];
+  const btns=document.querySelectorAll('#quizOpts .quiz-opt');
+  btns.forEach((b,j)=>{ b.style.cursor='default';
+    if(j===item.bon) b.classList.add('bon');
+    else if(j===i) b.classList.add('mauvais');
+  });
+  if(i===item.bon) qScore++;
+  const dernier = qIndex===QUIZ.length-1;
+  $('#quizFb').innerHTML=`<div class="quiz-fb">${item.fb}</div>
+    <button class="quiz-suivant" onclick="${dernier?'finQuiz()':'suivantQuiz()'}">${dernier?'Voir mon résultat ✨':'Question suivante →'}</button>`;
+}
+function suivantQuiz(){ qIndex++; rendreQuiz(); }
+function finQuiz(){
+  const msg = qScore>=4 ? 'Bravo, tu vois clair ! 💗' : qScore>=2 ? 'Bon début — chaque info te protège. 🌸' : 'L\'important, c\'est d\'apprendre. Tu es au bon endroit. 🤍';
+  $('#quizZone').innerHTML='';
+  $('#quizScore').innerHTML=`Ton score : <b>${qScore}/${QUIZ.length}</b> — ${msg}<br>
+    <button class="quiz-suivant" style="margin-top:14px" onclick="qIndex=0;qScore=0;rendreQuiz()">Recommencer le quiz</button>`;
+}
+
+/* ---------- Init ---------- */
+rendreCats(); rendreGrille(); rendreAvis(); rendreQuiz(); majCompteur();
+$('#notePaiement').innerHTML='🔒 Paiement sécurisé — <b>Stripe à brancher</b>';
+</script>
+
