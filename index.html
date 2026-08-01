@@ -325,7 +325,7 @@
   <h1>Un rendez-vous pour parler.<br><span>Des outils pour avancer.</span></h1>
   <p>Melissa accompagne les jeunes filles qui vivent de l'intimidation, un manque de confiance, des relations difficiles ou qui ont simplement besoin d'une adulte à l'écoute. Des rencontres humaines, concrètes et sans jugement. 💗</p>
   <div class="cta">
-    <button class="primaire" onclick="reserver('un rendez-vous jeunesse avec Melissa')">📅 Prendre rendez-vous</button>
+    <button class="primaire" onclick="reserver('une rencontre pour parler avec Melissa')">💬 Besoin de parler? Parle avec Melissa</button>
     <a href="#accompagnement" class="secondaire">Voir comment ça se passe</a>
   </div>
   <div class="preuve-hero">
@@ -443,7 +443,7 @@
 </section>
 
 <section id="accompagnement" class="wrap">
-  <h2 class="titre-section">🤍 Prendre rendez-vous avec Melissa</h2>
+  <h2 class="titre-section">🤍 Besoin de parler? Melissa est là pour t'écouter.</h2>
   <p class="sous-titre">Une intervenante jeunesse accessible pour écouter, outiller et accompagner</p>
   <div class="rdv-intro">
     <div>
@@ -452,7 +452,7 @@
       <p>Une jeune fille peut rencontrer Melissa pour mettre des mots sur ce qu'elle vit, reconnaître ses forces, travailler sa confiance, comprendre ses relations et choisir une prochaine étape réaliste. Un parent peut aussi faire le premier contact pour sa fille.</p>
     </div>
     <div class="rdv-actions">
-      <button class="btn-reserver" onclick="reserver('un rendez-vous jeunesse avec Melissa')">📅 Demander un rendez-vous</button>
+      <button class="btn-reserver" onclick="reserver('une rencontre pour parler avec Melissa')">💬 Parler avec Melissa</button>
       <small>Premier contact par courriel · Melissa répond avec les prochaines disponibilités.</small>
     </div>
   </div>
@@ -773,12 +773,11 @@ function avertir(id){
 /* ---------- Réservation service ---------- */
 function reserver(quoi){
   $('#modalEmoji').textContent='🤍';
-  $('#modalTitre').textContent='Réserver — '+quoi;
+  $('#modalTitre').textContent='Besoin de parler? Écris à Melissa';
   $('#modalTexte').innerHTML =
-    `Merci de ton intérêt pour <b>${quoi}</b> 💗<br><br>`+
-    `La jeune ou son parent peut écrire à <code>info@lesconstructionslapointe.com</code> avec son prénom, son âge, une courte description du besoin et quelques disponibilités. Melissa répondra pour clarifier le cadre et proposer la prochaine étape.<br><br>`+
-    `<a href="mailto:info@lesconstructionslapointe.com?subject=${encodeURIComponent('RoseAura — '+quoi)}&body=${encodeURIComponent('Bonjour Melissa,\n\nJe souhaite demander '+quoi+'.\n\nPrénom de la jeune :\nÂge :\nJe suis : la jeune / son parent / un organisme\nBesoin principal :\nDisponibilités :\n\nMerci!')}" `+
-    `style="display:inline-block;background:var(--rose);color:#fff;padding:10px 20px;border-radius:999px;font-weight:800;text-decoration:none">✉️ Ouvrir mon courriel</a>`;
+    `Tu n'as pas besoin de trouver les mots parfaits. La jeune, son parent ou un organisme peut écrire à <code>info@lesconstructionslapointe.com</code>. Melissa répondra pour comprendre le besoin et proposer la prochaine étape.<br><br>`+
+    `<a href="mailto:info@lesconstructionslapointe.com?subject=${encodeURIComponent('RoseAura — Besoin de parler avec Melissa')}&body=${encodeURIComponent('Bonjour Melissa,\n\nJ’aimerais te parler et voir comment tu pourrais nous aider.\n\nPrénom de la jeune :\nÂge :\nJe suis : la jeune / son parent / un organisme\nCe qui se passe en ce moment :\nCe que nous aimerions améliorer :\nNos disponibilités :\n\nMerci de nous répondre pour la prochaine étape.')}" `+
+    `style="display:inline-block;background:var(--rose);color:#fff;padding:10px 20px;border-radius:999px;font-weight:800;text-decoration:none">✉️ Écrire à Melissa</a>`;
   $('#modal').classList.add('ouvert');
 }
 
