@@ -58,8 +58,8 @@
   .hero h1 span{background:linear-gradient(90deg,var(--rose),var(--lila),var(--peche));-webkit-background-clip:text;background-clip:text;color:transparent}
   .hero p{max-width:600px;margin:18px auto 0;font-size:19px;color:var(--gris);line-height:1.5}
   .hero .cta{display:inline-flex;gap:12px;margin-top:26px;flex-wrap:wrap;justify-content:center}
-  .cta a{padding:14px 26px;border-radius:999px;font-weight:700;font-size:16px;transition:transform .15s}
-  .cta a:hover{transform:translateY(-2px)}
+  .cta a,.cta button{padding:14px 26px;border-radius:999px;font-weight:700;font-size:16px;transition:transform .15s;border:none;cursor:pointer;font-family:inherit}
+  .cta a:hover,.cta button:hover{transform:translateY(-2px)}
   .cta .primaire{background:linear-gradient(90deg,var(--rose),var(--lila));color:#fff;box-shadow:var(--ombre-forte)}
   .cta .secondaire{background:#fff;border:2px solid var(--rose-clair);color:var(--encre)}
   .preuve-hero{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:26px;color:var(--gris);font-size:14px;font-weight:600}
@@ -177,6 +177,19 @@
   .service b{color:var(--encre)}
   .btn-reserver{margin-top:18px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--rose),var(--lila));color:#fff;padding:12px 18px;border-radius:999px;font-weight:800;font-size:14.5px;transition:transform .15s}
   .btn-reserver:hover{transform:translateY(-2px)}
+
+  .rdv-intro{background:linear-gradient(135deg,#fff,var(--rose-pale));border:2px solid var(--rose-clair);border-radius:28px;padding:30px;margin:0 0 26px;box-shadow:var(--ombre);display:grid;grid-template-columns:1.35fr .65fr;gap:24px;align-items:center}
+  .rdv-intro h3{font-size:clamp(23px,3vw,31px);margin:7px 0 10px}
+  .rdv-intro p{color:var(--gris);line-height:1.6}
+  .rdv-actions{display:flex;flex-direction:column;gap:10px}
+  .rdv-actions .btn-reserver{margin-top:0;font-size:16px;padding:14px 20px}
+  .rdv-actions small{text-align:center;color:var(--gris);line-height:1.4}
+  .parcours-rdv{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
+  .etape-rdv{background:#fff;border:1px solid var(--rose-clair);border-radius:18px;padding:18px;text-align:left}
+  .etape-rdv b{display:block;margin-bottom:6px}
+  .etape-rdv span{width:30px;height:30px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;font-weight:900;margin-bottom:10px}
+  .etape-rdv p{font-size:13.5px;color:var(--gris);line-height:1.45}
+  @media(max-width:760px){.rdv-intro{grid-template-columns:1fr;text-align:center}.parcours-rdv{grid-template-columns:1fr}}
 
   .avis-legal{background:#fff;border:1px dashed var(--rose-clair);border-radius:16px;padding:16px 20px;margin-top:22px;font-size:13px;color:var(--gris);line-height:1.55;text-align:center}
   .avis-legal b{color:var(--encre)}
@@ -301,24 +314,24 @@
       <a href="#quiz">Quiz</a>
       <a href="#ressources">Ressources</a>
       <a href="#boutique">Boutique</a>
-      <a href="#accompagnement">Accompagnement</a>
+      <a href="#accompagnement">Rendez-vous</a>
     </nav>
     <button class="btn-panier" onclick="ouvrirPanier()">🛍️ Panier <span class="pastille" id="compteur">0</span></button>
   </div>
 </header>
 
 <section class="hero wrap">
-  <span class="kicker">🎀 Prévention & douceur · Ados · Jeunes adultes · Femmes</span>
-  <h1>Le rose te donne la force.<br><span>L'information te donne le pouvoir.</span></h1>
-  <p>RoseAura outille les jeunes femmes contre la violence et le contrôle — <b>prévention</b>, ateliers, ressources, et une boutique remplie de douceur. Parce que savoir, c'est se protéger. 💗</p>
+  <span class="kicker">🤍 Melissa Aubry · Intervenante jeunesse en prévention</span>
+  <h1>Un rendez-vous pour parler.<br><span>Des outils pour avancer.</span></h1>
+  <p>Melissa accompagne les jeunes filles qui vivent de l'intimidation, un manque de confiance, des relations difficiles ou qui ont simplement besoin d'une adulte à l'écoute. Des rencontres humaines, concrètes et sans jugement. 💗</p>
   <div class="cta">
-    <a href="#prevention" class="primaire">💗 Découvrir la prévention</a>
-    <a href="#quiz" class="secondaire">🧠 Faire le quiz</a>
+    <button class="primaire" onclick="reserver('un rendez-vous jeunesse avec Melissa')">📅 Prendre rendez-vous</button>
+    <a href="#accompagnement" class="secondaire">Voir comment ça se passe</a>
   </div>
   <div class="preuve-hero">
-    <div>🎀 <b>3 publics</b> : 12-17 · 18-25 · adultes</div>
-    <div>🏫 Ateliers <b>en milieu scolaire</b></div>
-    <div>🆘 Ressources <b>QC</b> à portée de main</div>
+    <div>🤝 <b>Rencontres individuelles</b> sur rendez-vous</div>
+    <div>🌷 Pour les <b>jeunes filles et leurs parents</b></div>
+    <div>🛟 Écoute, outils et <b>orientation au besoin</b></div>
   </div>
 </section>
 
@@ -430,14 +443,30 @@
 </section>
 
 <section id="accompagnement" class="wrap">
-  <h2 class="titre-section">🤍 Accompagnement & prévention</h2>
-  <p class="sous-titre">Aider les jeunes à se sentir fortes, entourées et bien équipées</p>
+  <h2 class="titre-section">🤍 Prendre rendez-vous avec Melissa</h2>
+  <p class="sous-titre">Une intervenante jeunesse accessible pour écouter, outiller et accompagner</p>
+  <div class="rdv-intro">
+    <div>
+      <span class="kicker" style="position:static">RENCONTRE JEUNESSE · SUR RENDEZ-VOUS</span>
+      <h3>Ta situation mérite d'être entendue.</h3>
+      <p>Une jeune fille peut rencontrer Melissa pour mettre des mots sur ce qu'elle vit, reconnaître ses forces, travailler sa confiance, comprendre ses relations et choisir une prochaine étape réaliste. Un parent peut aussi faire le premier contact pour sa fille.</p>
+    </div>
+    <div class="rdv-actions">
+      <button class="btn-reserver" onclick="reserver('un rendez-vous jeunesse avec Melissa')">📅 Demander un rendez-vous</button>
+      <small>Premier contact par courriel · Melissa répond avec les prochaines disponibilités.</small>
+    </div>
+  </div>
+  <div class="parcours-rdv" aria-label="Déroulement d'un rendez-vous jeunesse">
+    <div class="etape-rdv"><span>1</span><b>Tu nous écris</b><p>La jeune ou son parent explique brièvement le besoin et propose ses disponibilités.</p></div>
+    <div class="etape-rdv"><span>2</span><b>Melissa répond</b><p>Elle clarifie le cadre de la rencontre, répond aux questions et confirme le rendez-vous.</p></div>
+    <div class="etape-rdv"><span>3</span><b>Vous faites équipe</b><p>La rencontre sert à écouter, comprendre, choisir des outils et déterminer la prochaine action.</p></div>
+  </div>
   <div class="services">
     <div class="service">
       <div class="s-ico" style="background:var(--rose-clair)">💬</div>
-      <h3>Coaching éducatif individuel</h3>
-      <p>Une rencontre d'accompagnement avec une jeune pour travailler la confiance, l'estime, les limites et les relations saines. <b>Les parents peuvent réserver</b> pour leur ado.</p>
-      <button class="btn-reserver" onclick="reserver('une consultation individuelle')">Réserver une rencontre</button>
+      <h3>Rendez-vous avec une jeune</h3>
+      <p>Une rencontre individuelle pour parler d'intimidation, de confiance, d'estime de soi, de limites ou de relations saines. <b>Les parents peuvent prendre contact</b> pour leur fille.</p>
+      <button class="btn-reserver" onclick="reserver('un rendez-vous individuel avec Melissa')">Choisir ce rendez-vous</button>
     </div>
     <div class="service">
       <div class="s-ico" style="background:var(--lila-pale)">🎤</div>
@@ -447,15 +476,15 @@
     </div>
     <div class="service">
       <div class="s-ico" style="background:var(--peche-pale)">🏠</div>
-      <h3>Parents & organismes</h3>
-      <p>Des rencontres pour donner aux adultes des mots simples, des repères et des outils afin de mieux soutenir une jeune, sans jugement.</p>
-      <button class="btn-reserver" onclick="reserver('une intervention en organisme')">Nous contacter</button>
+      <h3>Rendez-vous parent</h3>
+      <p>Une rencontre pour donner au parent des mots simples, des repères et des outils afin de mieux soutenir sa fille, sans jugement.</p>
+      <button class="btn-reserver" onclick="reserver('un rendez-vous parent avec Melissa')">Parler avec Melissa</button>
     </div>
   </div>
   <p class="avis-legal">
-    💗 RoseAura offre du <b>coaching éducatif, de l'accompagnement, de la prévention et des outils concrets</b>.
+    💗 Melissa offre de <b>l'intervention jeunesse préventive, de l'accompagnement éducatif et des outils concrets</b>.
     Ce n'est <b>pas</b> un service de psychologie, de psychothérapie ni un suivi médical. L'accompagnement ne remplace pas un professionnel de la santé.
-    En cas de besoin urgent : <b>Tel-jeunes 1&nbsp;800&nbsp;263-2266</b> · <b>Info-Social 811</b>.
+    Pour une jeune mineure, le cadre de la rencontre, le consentement et la confidentialité sont clarifiés avant le rendez-vous. En cas de besoin urgent : <b>Tel-jeunes 1&nbsp;800&nbsp;263-2266</b> · <b>Info-Social 811</b> · danger immédiat : <b>911</b>.
   </p>
 </section>
 
@@ -463,10 +492,10 @@
   <div class="apropos">
     <div class="ap-photo">🌷</div>
     <div class="ap-txt">
-      <span class="kicker" style="position:static">💗 Coach en prévention & accompagnement jeunesse</span>
-      <h2>Melissa Aubry — du vécu, des formations et une présence de terrain.</h2>
+      <span class="kicker" style="position:static">💗 Intervenante jeunesse en prévention</span>
+      <h2>Melissa Aubry — une présence humaine pour les jeunes filles.</h2>
       <p>Moi aussi, j'ai vécu l'<b>intimidation</b>. J'ai vécu la <b>violence</b>. Je sais ce que c'est, de se sentir seule et de ne pas avoir les mots pour nommer ce qui fait mal. C'est de là que vient RoseAura — de mon vécu, transformé en mission.</p>
-      <p>J'ai suivi des <b>formations en accompagnement et en développement personnel</b>, puis j'ai mis ces apprentissages en pratique dans des suivis auprès de jeunes. Mon rôle : écouter, clarifier, transmettre des repères et aider chaque jeune à trouver ses propres mots et ses prochaines actions.</p>
+      <p>J'ai suivi des <b>formations en accompagnement et en développement personnel</b>, puis j'ai mis ces apprentissages en pratique dans des suivis auprès de jeunes. Aujourd'hui, j'offre des rendez-vous où une jeune fille peut être écoutée, mieux comprendre ce qu'elle vit et repartir avec des repères et des actions concrètes.</p>
       <div class="expertise" aria-label="L'approche de Melissa Aubry">
         <div class="expertise-item"><span>🎓</span><b>Formation continue</b><small>Des outils d'accompagnement et de développement personnel actualisés.</small></div>
         <div class="expertise-item"><span>🤝</span><b>Suivis jeunesse</b><small>Une expérience de rencontres centrées sur l'écoute et les besoins de la jeune.</small></div>
@@ -747,9 +776,8 @@ function reserver(quoi){
   $('#modalTitre').textContent='Réserver — '+quoi;
   $('#modalTexte').innerHTML =
     `Merci de ton intérêt pour <b>${quoi}</b> 💗<br><br>`+
-    `Écris-nous à <code>info@lesconstructionslapointe.com</code> avec tes disponibilités, `+
-    `et on te revient rapidement.<br><br>`+
-    `<a href="mailto:info@lesconstructionslapointe.com?subject=${encodeURIComponent('RoseAura — '+quoi)}" `+
+    `La jeune ou son parent peut écrire à <code>info@lesconstructionslapointe.com</code> avec son prénom, son âge, une courte description du besoin et quelques disponibilités. Melissa répondra pour clarifier le cadre et proposer la prochaine étape.<br><br>`+
+    `<a href="mailto:info@lesconstructionslapointe.com?subject=${encodeURIComponent('RoseAura — '+quoi)}&body=${encodeURIComponent('Bonjour Melissa,\n\nJe souhaite demander '+quoi+'.\n\nPrénom de la jeune :\nÂge :\nJe suis : la jeune / son parent / un organisme\nBesoin principal :\nDisponibilités :\n\nMerci!')}" `+
     `style="display:inline-block;background:var(--rose);color:#fff;padding:10px 20px;border-radius:999px;font-weight:800;text-decoration:none">✉️ Ouvrir mon courriel</a>`;
   $('#modal').classList.add('ouvert');
 }
