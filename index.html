@@ -866,7 +866,7 @@ function filtrer(id){ catActive=id; rendreCats(); rendreGrille(); }
 function rendreGrille(){
   let liste = catActive==='tous' ? PRODUITS.slice() : PRODUITS.filter(p=>p.cat===catActive);
   liste.sort((a,b)=>(BIENTOT.has(a.id)?1:0)-(BIENTOT.has(b.id)?1:0)); // disponibles d'abord
-  const nomCat = {securite:'Sécurité',deco:'Déco',papeterie:'Papeterie',ebooks:'Ebook',formations:'Formation',gourmandises:'Gourmandise'};
+  const nomCat = window.ROSEAURA_CATEGORY_LABELS || {securite:'Sécurité',deco:'Déco',papeterie:'Papeterie',ebooks:'Ebook',formations:'Formation',gourmandises:'Gourmandise'};
   const badges = {vente:'🔥 Meilleure vente', coup:'💖 Coup de cœur'};
   $('#grille').innerHTML = liste.map(p=>{
     const rabais = p.avant ? Math.round((1-p.prix/p.avant)*100) : 0;
@@ -1147,5 +1147,7 @@ function finQuiz(){
 rendreCats(); rendreGrille(); lancerQuiz('relation',false); majCompteur(); restaurerPreferences(); restaurerFavoris();
 $('#notePaiement').innerHTML='🔒 Paiement sécurisé — <b>Stripe à brancher</b>';
 </script>
+<script src="cms-config.js"></script>
+<script src="cms.js"></script>
 </body>
 </html>
