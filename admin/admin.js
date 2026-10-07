@@ -5,7 +5,7 @@ let token='',userId='',role='',revision=0,content=null,base=null,tab='texts',dir
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function notify(msg){$('#notice').textContent=msg;}
 async function api(path,{method='GET',body,headers={}}={}) {
-  const response=await fetch(cfg.url+path,{method,headers:{apikey:cfg.key,Authorization:`Bearer ${token||cfg.key}`,...(body && !(body instanceof File)?{'Content-Type':'application/json'}:{}),...headers},body:body instanceof File?body:body?JSON.stringify(body):undefined});
+  const response=await fetch(cfg.url+path,{method,headers:{apikey:cfg.key,...(token?{Authorization:`Bearer ${token}`}:{ }),...(body && !(body instanceof File)?{'Content-Type':'application/json'}:{}),...headers},body:body instanceof File?body:body?JSON.stringify(body):undefined});
   const data=await response.json().catch(()=>null);
   if(!response.ok) {
     if(response.status===401) logout();
@@ -15,6 +15,28 @@ async function api(path,{method='GET',body,headers={}}={}) {
 }
 async function run(work){document.body.classList.add('busy');try{await work();}catch(e){notify(e.message);}finally{document.body.classList.remove('busy');}}
 function changed(){dirty=true;previewed=false;$('#publish').disabled=true;}
+async function enter(session){
+  token=session.access_token;userId=session.user.id;
+  const roles=await api(`/rest/v1/ra_roles?user_id=eq.${encodeURIComponent(userId)}&select=role`);role=roles[0]?.role;
+  if(!['admin','content_manager'].includes(role)){logout();throw Error('Ce compte n’a pas accès à l’administration.');}
+  await load();$('#login').hidden=true;$('#activate').hidden=true;$('#workspace').hidden=false;$('#logout').hidden=false;
+  $('#role').textContent=role==='admin'?'Administrateur':'Gestionnaire de contenu';$('#historyTab').hidden=role!=='admin';$('#accountsTab').hidden=role!=='admin';notify('Connexion réussie.');
+}
+function readInvitation(){
+const invitation=new URLSearchParams(location.hash.slice(1));
+const inviteHash=invitation.get('token_hash'),inviteType=invitation.get('type');
+if(inviteHash && ['invite','recovery','signup'].includes(inviteType)){
+  token='';userId='';role='';$('#workspace').hidden=true;$('#logout').hidden=true;$('#role').textContent='';
+  window.history.replaceState(null,'',location.pathname);$('#login').hidden=true;$('#activate').hidden=false;
+  $('#activateForm').onsubmit=e=>{e.preventDefault();run(async()=>{
+    const f=new FormData(e.target);if(f.get('password')!==f.get('confirm'))throw Error('Les deux mots de passe doivent être identiques.');
+    if(!token){const session=await api('/auth/v1/verify',{method:'POST',body:{token_hash:inviteHash,type:inviteType}});token=session.access_token;userId=session.user.id;}
+    await api('/auth/v1/user',{method:'PUT',body:{password:f.get('password')}});
+    e.target.reset();await enter({access_token:token,user:{id:userId}});
+  });};
+}
+}
+readInvitation();addEventListener('hashchange',readInvitation);
 async function load(){
   const rows=await api('/rest/v1/ra_draft?id=eq.1&select=*');
   if(!rows.length && !base)throw Error('Le contenu initial est encore en chargement. Réessayez dans quelques secondes.');
@@ -25,11 +47,7 @@ $('#loginForm').onsubmit=e=>{e.preventDefault();run(async()=>{
   if(!cfg?.url||!cfg?.key)throw Error('L’administration attend l’activation du service sécurisé par le propriétaire.');
   const form=new FormData(e.target);
   const session=await api('/auth/v1/token?grant_type=password',{method:'POST',body:{email:form.get('email'),password:form.get('password')}});
-  token=session.access_token;userId=session.user.id; e.target.password.value='';
-  const roles=await api(`/rest/v1/ra_roles?user_id=eq.${encodeURIComponent(userId)}&select=role`);role=roles[0]?.role;
-  if(!['admin','content_manager'].includes(role)){logout();throw Error('Ce compte n’a pas accès à l’administration.');}
-  await load();$('#login').hidden=true;$('#workspace').hidden=false;$('#logout').hidden=false;
-  $('#role').textContent=role==='admin'?'Administrateur':'Gestionnaire de contenu';$('#historyTab').hidden=role!=='admin';$('#accountsTab').hidden=role!=='admin';notify('Connexion réussie.');
+  e.target.password.value='';await enter(session);
 });};
 function logout(){token='';userId='';role='';content=null;dirty=false;$('#workspace').hidden=true;$('#login').hidden=false;$('#logout').hidden=true;$('#role').textContent='';$('#editor').replaceChildren();$('#previewDialog').close();$('#previewFrame').src='about:blank';}
 $('#logout').onclick=()=>run(async()=>{try{await api('/auth/v1/logout',{method:'POST'});}finally{logout();notify('Déconnecté.');}});
@@ -50,7 +68,7 @@ function render(){
   if(!content)return;
   document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-current',String(b.dataset.tab===tab)));
   $('#add').hidden=!['images','products','categories','articles'].includes(tab);$('#search').hidden=['history','accounts'].includes(tab);
-  if(tab==='history'){run(history);return;}
+  if(tab==='history'){run(loadHistory);return;}
   if(tab==='accounts'){accounts();return;}
   const search=$('#search').value.toLowerCase();
   const rows=content[tab].filter(x=>JSON.stringify(x).toLowerCase().includes(search));
@@ -125,13 +143,13 @@ $('#publish').onclick=()=>run(async()=>{
   if(!confirm('Publier ce brouillon? Les visiteurs verront ces changements.'))return;
   revision=await api('/rest/v1/rpc/ra_write',{method:'POST',body:{operation:'publish',expected_revision:revision}});previewed=false;$('#publish').disabled=true;notify('Les changements sont publiés.');
 });
-async function history(){
+async function loadHistory(){
   const rows=await api('/rest/v1/ra_history?select=id,created_at,actor,action,revision&order=id.desc&limit=100');
   if(tab!=='history')return;
   $('#editor').innerHTML=rows.map(r=>`<section class="card"><p>${esc(new Date(r.created_at).toLocaleString('fr-CA'))}</p><p>${esc(r.action)} · version ${r.revision}</p><p class="muted">Compte : ${esc(r.actor)}</p><button data-restore="${r.id}">Restaurer dans le brouillon</button></section>`).join('')||'<p>Aucune modification enregistrée.</p>';
 }
 function accounts(){
-  $('#editor').innerHTML='<section class="card"><h2>Accorder un accès au contenu</h2><p>Le nouveau compte reçoit seulement le rôle Gestionnaire de contenu.</p><form id="inviteForm"><label>Courriel<input name="email" type="email" required></label><label>Mot de passe initial<input name="password" type="password" minlength="12" required autocomplete="new-password"></label><button>Créer le compte</button></form></section>';
-  $('#inviteForm').onsubmit=e=>{e.preventDefault();run(async()=>{const f=new FormData(e.target);await api('/functions/v1/ra-accounts',{method:'POST',body:{email:f.get('email'),password:f.get('password')}});e.target.password.value='';notify('Compte Gestionnaire de contenu créé. Communiquez son mot de passe de façon privée.');});};
+  $('#editor').innerHTML='<section class="card"><h2>Accorder un accès au contenu</h2><p>Le nouveau compte reçoit seulement le rôle Gestionnaire de contenu.</p><form id="inviteForm"><label>Courriel<input name="email" type="email" required></label><label>Action<select name="action"><option value="invite">Inviter un nouveau gestionnaire</option><option value="recovery">Renouveler le lien d’accès</option></select></label><button>Préparer le lien d’accès</button><p id="accountLink"></p></form></section>';
+  $('#inviteForm').onsubmit=e=>{e.preventDefault();run(async()=>{const f=new FormData(e.target);const result=await api('/functions/v1/ra-accounts',{method:'POST',body:{email:f.get('email'),action:f.get('action')}});const a=document.createElement('a');a.href=result.url;a.textContent='Lien privé pour choisir le mot de passe';const dest=$('#accountLink');dest.replaceChildren(a);notify('Lien d’accès préparé. Transmettez-le uniquement à la personne concernée.');});};
 }
 addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});

@@ -15,7 +15,7 @@
     for(const [id,item] of Object.entries(collection)) {
       for(const [name,index] of [['title',titleIndex],['body',bodyIndex]]) {
         const temp=document.createElement('div'); temp.innerHTML=item[index];
-        extraTexts.set(`${kind}-${id}-${name}`,{item,index,initial:temp.textContent,label:`${kind==='guide'?'Guide':'Sujet'} : ${item[titleIndex]}`});
+        extraTexts.set(`${kind}-${id.normalize('NFD').replace(/[\u0300-\u036f]/g,'')}-${name}`,{item,index,initial:temp.textContent,label:`${kind==='guide'?'Guide':'Sujet'} : ${item[titleIndex]}`});
       }
     }
   }
@@ -43,7 +43,8 @@
     if(gallery)gallery.innerHTML=addedImages.map(t=>`<img src="${escape(safeUrl(t.src))}" alt="${escape(t.alt)}" style="max-width:100%;max-height:360px;margin:12px">`).join('');
     if(Array.isArray(data.categories)) {
       CATEGORIES.splice(0,CATEGORIES.length,...data.categories.map(c=>({id:c.id,nom:escape(c.nom)})));
-      window.ROSEAURA_CATEGORY_LABELS=Object.fromEntries(CATEGORIES.map(c=>[c.id,c.nom]));
+      const originalLabels={securite:'Sécurité',deco:'Déco',papeterie:'Papeterie',ebooks:'Ebook',formations:'Formation',gourmandises:'Gourmandise'};
+      window.ROSEAURA_CATEGORY_LABELS=Object.fromEntries(CATEGORIES.map(c=>[c.id,base.categories.find(b=>b.id===c.id)?.nom===c.nom ? (originalLabels[c.id]||c.nom) : c.nom]));
     }
     if(Array.isArray(data.products)) {
       const originals=new Map(PRODUITS.map(p=>[p.id,p])); BIENTOT.clear();
@@ -73,7 +74,7 @@
     });
     parent.postMessage({type:'roseaura-ready'},location.origin);
   } else if(cfg?.url && cfg?.key) {
-    fetch(`${cfg.url}/rest/v1/ra_live?id=eq.1&select=content`,{headers:{apikey:cfg.key,Authorization:`Bearer ${cfg.key}`},cache:'no-store'})
+    fetch(`${cfg.url}/rest/v1/ra_live?id=eq.1&select=content`,{headers:{apikey:cfg.key},cache:'no-store'})
       .then(r=>{if(!r.ok)throw Error();return r.json();}).then(rows=>{if(rows[0])render(rows[0].content);}).catch(()=>{});
   }
 })();

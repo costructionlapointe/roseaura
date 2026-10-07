@@ -1,15 +1,15 @@
 # Activation de l’administration RoseAura
 
-Cette branche est préparatoire. Le site public conserve son contenu tant que le service n’est pas activé. Aucun mot de passe ni secret n’est présent dans le dépôt.
+Le service de contenu RoseAura est activé. Les comptes et invitations sont stockés uniquement dans le service sécurisé. Aucun mot de passe ni secret n’est présent dans le dépôt. Le compte gestionnaire choisit son propre mot de passe grâce à un lien privé à usage unique.
 
 1. Créer un projet Supabase dédié à RoseAura, après autorisation du propriétaire. Ne pas utiliser le projet des applications Lapointe.
-2. Désactiver les inscriptions publiques et les connexions anonymes. Configurer les URL autorisées sur `https://roseauras.ca/admin/`. Activer la protection contre les mots de passe compromis et fixer une durée courte pour les jetons.
+2. Conserver les droits d’accès indépendants des inscriptions : seuls les comptes explicitement inscrits dans ra_roles peuvent gérer le contenu. Les invitations utilisent un fragment de lien puis une vérification POST, sans dépendre d’un redirecteur externe. Les nouveaux utilisateurs sans rôle n’ont aucun accès. La protection payante contre les mots de passe compromis est facultative.
 3. Appliquer `setup.sql`. Exécuter les tests d’autorisation sur le projet, puis les contrôles de sécurité Supabase.
 4. Créer le compte du propriétaire dans Supabase Auth, puis attribuer **uniquement à cet utilisateur** le rôle `admin` dans `ra_roles`, depuis l’interface du propriétaire. Aucun premier visiteur ne peut devenir administrateur.
 5. Déployer `accounts.ts` comme fonction `ra-accounts`, avec la vérification JWT activée. Les secrets intégrés Supabase restent côté serveur. Restreindre les origines à Roseauras.ca.
 6. Renseigner `cms-config.js` avec l’URL et la **clé publique publishable**, jamais une clé secrète ni `service_role`.
 7. Vérifier en environnement de test les connexions, uploads, deux modifications concurrentes, publication, restauration, déconnexion et refus d’accès au gestionnaire pour les fonctions réservées au propriétaire. Vérifier les écrans sur téléphone et ordinateur.
-8. Le propriétaire crée le compte `gestionnaire@example.com` depuis la section Accès, avec un mot de passe unique transmis en privé. Tester ce compte puis le changement de son mot de passe.
+8. Le propriétaire invite le gestionnaire depuis la section Accès et transmet uniquement le lien privé à usage unique. Le gestionnaire choisit son propre mot de passe. La même section permet de renouveler un lien d’accès.
 9. Fusionner cette branche et publier par GitHub Pages, sans toucher au domaine, aux DNS ou au design public. Le premier brouillon n’est mis en ligne qu’après aperçu et publication volontaire.
 
 ## Choix et limites
@@ -29,4 +29,4 @@ Cette branche est préparatoire. Le site public conserve son contenu tant que le
 
 ## État de livraison
 
-Préparation uniquement : aucune base distante, aucun compte et aucun déploiement n’ont été créés. Validation locale : 24 contrôles Postgres/PGlite de permissions et transactions, 4 contrôles de la fonction de création de comptes (transport simulé), 10 contrôles navigateur des parcours public/administration (transport Auth/REST simulé). Les tests se lancent avec `npm ci`, `npx playwright install chromium`, puis `npm test`. L’activation réelle et les tests complets restent requis.
+Service distant et rôles configurés. La fonction de gestion des comptes exige un JWT valide puis le rôle Administrateur. Aucune fonction d’initialisation publique ou clé d’accès privilégiée permanente n’existe. Validation locale : 24 contrôles Postgres/PGlite de permissions et transactions, 4 contrôles de la fonction de création de comptes (transport simulé), 11 contrôles navigateur des parcours public/administration (transport Auth/REST simulé). Les tests se lancent avec `npm ci`, `npx playwright install chromium`, puis `npm test`. 17 contrôles supplémentaires ont été réalisés avec le service réel : Auth, données, permissions, aperçu, publication, restauration et téléversement de photo. La protection payante contre les mots de passe compromis n’est pas incluse dans le forfait gratuit; un mot de passe unique long est requis par l’interface.

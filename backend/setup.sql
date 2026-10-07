@@ -14,6 +14,8 @@ alter table public.ra_history enable row level security;
 revoke all on public.ra_roles,public.ra_draft,public.ra_live,public.ra_history from anon,authenticated;
 grant select on public.ra_roles,public.ra_draft,public.ra_live,public.ra_history to authenticated;
 grant select on public.ra_live to anon;
+grant all on public.ra_roles,public.ra_draft,public.ra_live,public.ra_history to service_role;
+grant usage,select on sequence public.ra_history_id_seq to service_role;
 create policy own_role on public.ra_roles for select to authenticated using(user_id=(select auth.uid()));
 create policy public_live on public.ra_live for select to anon,authenticated using(true);
 create function ra_private.role() returns text language sql stable security definer set search_path='' as $$

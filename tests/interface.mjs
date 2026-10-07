@@ -19,7 +19,7 @@ try {
  await page.route('https://cms.test/**',async route=>{
   const req=route.request();const url=new URL(req.url());calls.push(url.pathname);
   let result=[];
-  if(url.pathname==='/auth/v1/token')result={access_token:'test-session',user:{id:'00000000-0000-0000-0000-000000000002'}};
+  if(url.pathname==='/auth/v1/token'||url.pathname==='/auth/v1/verify')result={access_token:'test-session',user:{id:'00000000-0000-0000-0000-000000000002'}};
   if(url.pathname==='/rest/v1/ra_roles')result=[{role:'content_manager'}];
   if(url.pathname==='/rest/v1/ra_draft')result=draft?[{id:1,content:draft,revision:rev}]:[];
   if(url.pathname==='/rest/v1/rpc/ra_write'){const b=req.postDataJSON();if(b.operation==='save')draft=b.payload;if(b.operation==='publish')live=structuredClone(draft);result=++rev;}
@@ -38,5 +38,6 @@ try {
  await page.getByRole('button',{name:'Fermer',exact:true}).click();await page.getByRole('button',{name:'Photos',exact:true}).click();await page.getByRole('button',{name:'Ajouter',exact:true}).click();assert.equal(await page.locator('#editor .card').count(),2);checks++;
  await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);checks++;
  await page.getByRole('button',{name:'Déconnexion',exact:true}).click();await page.locator('#workspace').waitFor({state:'hidden'});assert.equal(await page.locator('#workspace').isVisible(),false);assert.equal(await page.evaluate(()=>token), '');assert.deepEqual(errors,[]);checks++;
+ await page.goto(origin+'/admin/#token_hash=test-token&type=recovery');await page.locator('#activate').waitFor({state:'visible'});await page.locator('#activateForm input[name=password]').fill('new-long-password');await page.locator('#activateForm input[name=confirm]').fill('new-long-password');await page.getByRole('button',{name:'Activer mon accès'}).click();await page.locator('#workspace').waitFor({state:'visible'});assert.equal(await page.evaluate(()=>location.hash),'');checks++;
  console.log(`${checks} public rendering and administration interface checks passed (mock Auth/REST transport)`);
 }finally{await browser.close();server.close();}
