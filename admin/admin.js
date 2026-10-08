@@ -40,7 +40,9 @@ readInvitation();addEventListener('hashchange',readInvitation);
 async function load(){
   const rows=await api('/rest/v1/ra_draft?id=eq.1&select=*');
   if(!rows.length && !base)throw Error('Le contenu initial est encore en chargement. Réessayez dans quelques secondes.');
-  content=structuredClone(rows[0]?.content||base);revision=rows[0]?.revision||0;dirty=false;previewed=false;
+  const saved=rows[0]?.content;
+  if(!base)throw Error('Le contenu initial est encore en chargement. Réessayez dans quelques secondes.');
+  content=structuredClone(saved?.schemaVersion===base.schemaVersion?saved:base);revision=rows[0]?.revision||0;dirty=false;previewed=false;
   $('#publish').disabled=true;render();
 }
 $('#loginForm').onsubmit=e=>{e.preventDefault();run(async()=>{

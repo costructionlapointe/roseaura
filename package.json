@@ -1,1 +1,1 @@
-{"name":"roseaura-content-admin","private":true,"scripts":{"test":"node tests/permissions.mjs && node tests/accounts.mjs && node tests/interface.mjs"},"devDependencies":{"@electric-sql/pglite":"0.3.14","playwright":"1.56.1"}}
+{"name":"roseaura-content-admin","private":true,"scripts":{"test":"node tests/permissions.mjs && node tests/accounts.mjs && node tests/interface.mjs && node tests/aura.mjs"},"devDependencies":{"@electric-sql/pglite":"0.3.14","playwright":"1.56.1"}}

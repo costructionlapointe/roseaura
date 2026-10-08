@@ -20,6 +20,7 @@
     }
   }
   const base = {
+    schemaVersion: "aura-2026-10",
     texts: [...textNodes.map((n,i) => ({id: String(i), label: n.parentElement.closest('section')?.id || 'Page', value:n.textContent})),...Array.from(extraTexts,([id,t])=>({id,label:t.label,value:t.initial}))],
     images: imageNodes.map((n,i) => ({id:String(i),src:new URL(n.getAttribute('src')||'', 'https://roseauras.ca/').href,alt:n.alt})),
     products: PRODUITS.map(({cout,fournisseur,stripe,...p}) => ({...p, photo:'', unavailable:BIENTOT.has(p.id)})),
@@ -28,6 +29,8 @@
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const safeUrl = value => {try {const u=new URL(value,location.href);return ['https:','http:'].includes(u.protocol)?u.href:'';}catch{return '';}};
   function render(data) {
+    // Numeric content IDs from the former layout cannot be applied to this edition.
+    if(data.schemaVersion !== base.schemaVersion) return;
     for(const t of data.texts || []) {
       if(textNodes[Number(t.id)]) textNodes[Number(t.id)].textContent=t.value;
       const extra=extraTexts.get(t.id);
@@ -56,7 +59,9 @@
           couleur:/^var\(--[a-z-]+\)$/.test(p.couleur)?p.couleur:'var(--rose-clair)',
           emoji:p.photo && safeUrl(p.photo)?`<img src="${escape(safeUrl(p.photo))}" alt="${escape(p.nom)}" style="width:100%;height:100%;object-fit:cover">`:escape(p.emoji||'🌸')};
       }));
-      rendreCats(); rendreGrille(); majCompteur();
+      if(typeof rendreCats === "function") rendreCats();
+      if(typeof rendreGrille === "function") rendreGrille();
+      if(typeof majCompteur === "function") majCompteur();
     }
     let articles=document.getElementById('cms-articles');
     if(!articles && data.articles?.some(a=>a.published)) {
